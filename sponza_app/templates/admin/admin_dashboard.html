@@ -1,0 +1,245 @@
+{% extends "admin/base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='admin/styles/admin_dashboard.css')}}">
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 heading">Dashboard</h1>
+        <button id="addAdminButton" class="btn btn-primary">Add Admin</button>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Users</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Expenses</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">50000</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-indian-rupee-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total
+                                Influencer
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">2</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Total Sponsors</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">3</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Campaigns Growth</h6>
+
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4 pie">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">User Type Split</h6>
+                </div>
+                <div class="card-body pie-body">
+                    <div class="chart-pie pt-4 pb-2" id="chartPie" data-labels='["Influencer", "Sponsor"]'>
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% if campaigns %}
+<div class="details">
+    <div class="top-details">
+        <h1 class="h3 mb-4 text-gray-800 heading">Flagged Campaigns:</h1>
+        <form id="flagged-campaigns-search-form" class="search-form">
+            <input type="search" id="flagged-campaigns-search-input" name="q" class="search-text"
+                placeholder="Search the Campaign" autocomplete="off">
+            <input type="submit" id="flagged-campaigns-search-button" value="" class="search-submit">
+        </form>
+    </div>
+    <div id="flagged-campaigns-no-matches" class="no-matches" style="display: none;">No matched data</div>
+    <div class="detail-box">
+        {% for camp in campaigns %}
+        <div class="campaigns-box">
+            <img class="profile-img" src="{{ camp.campaign_profile_image }}" alt="Profile Image">
+            <h5>{{ camp.campaign_title }}</h5>
+            <button class="view view-campaign" type="button" data-title="Campaign Details" data-content="
+                <p><strong>Sponsor Name:</strong> {{ camp.sponsor_name }}</p>
+                <p><strong>Duration:</strong> {{ camp.total_camp_days }} days</p>
+                <p><strong>Completed Days:</strong> {{ camp.completed_camp_days }} days</p>
+                <p><strong>Completed Progress:</strong> {{ camp.progress }}%</p>
+                <p><strong>Influencers:</strong> 
+                    {% if camp.all_influencers %}
+                        {{ camp.all_influencers | join(', ') }}
+                    {% else %}
+                        No Influencers
+                    {% endif %}
+                </p>
+            " onclick="showDetails(this)">
+                View
+            </button>
+            <button class="unflag" type="button" data-id="{{camp.campaign_id}}" data-role="camp">Unflag</button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div>
+    <h1 class="h3 mb-4 text-gray-800 heading" style="margin-left: 3rem;">No Flagged Campaigns</h1>
+</div>
+{% endif %}
+
+{% if sponsors %}
+<div class="details">
+    <div class="top-details">
+        <h1 class="h3 mb-4 text-gray-800">Flagged Sponsors:</h1>
+        <form id="flagged-sponsors-search-form" class="search-form">
+            <input type="search" id="flagged-sponsors-search-input" name="q" class="search-text"
+                placeholder="Search the Sponsor" autocomplete="off">
+            <input type="submit" id="flagged-sponsors-search-button" value="" class="search-submit">
+        </form>
+    </div>
+    <div id="flagged-sponsors-no-matches" class="no-matches" style="display: none;">No matched data</div>
+    {% for spn in sponsors %}
+    <div class="sponsors-box">
+        <img class="profile-img" src="{{ spn.sponsor_profile_image }}" alt="Profile Image">
+        <h5>{{ spn.sponsor_company_name }}</h5>
+        <button class="view view-sponsor" type="button" data-title="Sponsor Details" data-content="
+                <p><strong>Sponsor Name:</strong> {{ spn.sponsor_company_name }}</p>
+                <p><strong>Ongoing Campaigns:</strong> 
+                    {% if spn.campaign_titles %}
+                        {{ spn.campaign_titles | join(', ') }}
+                    {% else %}
+                        No ongoing campaigns
+                    {% endif %}
+                </p>" onclick="showDetails(this)">View</button>
+        <button class="unflag" type="button" data-id="{{spn.sponsor_id}}" data-role="spn">Unflag</button>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div>
+    <h1 class="h3 mb-4 text-gray-800" style="margin-left: 3rem;">No Flagged Sponsors</h1>
+</div>
+{% endif %}
+
+{% if influencers %}
+<div class="details">
+    <div class="top-details">
+        <h1 class="h3 mb-4 text-gray-800">Flagged Influencers:</h1>
+        <form id="flagged-influencers-search-form" class="search-form">
+            <input type="search" id="flagged-influencers-search-input" name="q" class="search-text"
+                placeholder="Search the Influencer" autocomplete="off">
+            <input type="submit" id="flagged-influencers-search-button" value="" class="search-submit">
+        </form>
+    </div>
+    <div id="flagged-influencers-no-matches" class="no-matches" style="display: none;">No matched data</div>
+    {% for inf in influencers %}
+    <div class="influencer-box">
+        <img class="profile-img" src="{{ inf.influencer_profile_image }}" alt="Profile Image">
+        <h5>{{ inf.influencer_user_name }}</h5>
+        <button class="view view-influencer" type="button" data-title="Influencer Details" data-content="<p><strong>Influencer Name:</strong> {{ inf.influencer_user_name }}</p>
+                              <p><strong>Niche:</strong> {{ inf.influencer_niche }}</p>
+                              <p><strong>Social Media Platform:</strong> {{ inf.influencer_social_media_platform }}</p>
+                              <p><strong>Ongoing Campaigns:</strong> 
+                                  {% if inf.campaign_titles %}
+                                      {{ inf.campaign_titles | join(', ') }}
+                                  {% else %}
+                                      No ongoing campaigns
+                                  {% endif %}
+                              </p>" onclick="showDetails(this)">View</button>
+        <button class="unflag" type="button" data-id="{{inf.influencer_id}}" data-role="inf">Unflag</button>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div>
+    <h1 class="h3 mb-4 text-gray-800" style="margin-left: 3rem;">No Flagged Influencers</h1>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<script src="{{url_for('static', filename='admin/scripts/admin_dashboard.js')}}"></script>
+{% endblock %}

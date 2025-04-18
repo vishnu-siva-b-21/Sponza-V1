@@ -1,0 +1,99 @@
+{% extends "influencer/base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='influencer/styles/influencer_campaigns.css')}}">
+{% endblock %}
+
+{% block search %}
+<form id="searchForm" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="get" action="{{ url_for('influencer.search_campaigns') }}">
+    <div class="input-group">
+        <input type="text" class="form-control bg-light border-0 small" id="searchInput" placeholder="Search for..."
+            aria-label="Search" aria-describedby="basic-addon2" name="q" value="{{ search_query or '' }}">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit" id="searchButton">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block main %}
+{% if all_camp %}
+<div class="details">
+    <h1 class="h3 mb-4 text-gray-800">
+        All
+        {% if sponsor_name %}
+        {{sponsor_name.title()}}
+        {% endif %}
+        Non Requested
+        Campaigns</h1>
+
+    <div class="detail-box">
+        {% for camp in all_camp %}
+        <div class="campaigns-box">
+            <img class="profile-img" src="{{camp.campaign_profile_image}}" alt="Profile Image">
+            <h5>{{camp.campaign_title}}</h5>
+            <h5><a href="{{url_for('influencer.influencer_campaigns', id=camp.sponsor_id)}}">{{camp.sponser_name}}</a>
+            </h5>
+            <button class="view view1" type="button" data-inf-id="{{influencer_id}}" data-camp-id="{{camp.campaign_id}}"
+                data-sponsor-name="{{camp.sponser_name}}" data-campaign-title="{{camp.campaign_title}}"
+                data-campaign-desc="{{camp.campaign_desc}}" data-end-date="{{camp.campaign_end_date}}">View</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% if not search_query %}
+    {% if pagination.pages > 1 %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if pagination.has_prev %}
+            <li class="page-item">
+                <a class="page-link"
+                    href="{{ url_for('influencer.influencer_campaigns', page=pagination.prev_num, id=request.args.get('id')) }}"
+                    aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+            {% endif %}
+
+            {% for page_num in pagination.iter_pages() %}
+            <li class="page-item {% if page_num == pagination.page %}active{% endif %}">
+                <a class="page-link"
+                    href="{{ url_for('influencer.influencer_campaigns', page=page_num, id=request.args.get('id')) }}">{{
+                    page_num }}</a>
+            </li>
+            {% endfor %}
+
+            {% if pagination.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                    href="{{ url_for('influencer.influencer_campaigns', page=pagination.next_num, id=request.args.get('id')) }}"
+                    aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    {% endif %}
+</div>
+{% else %}
+<div>
+    <h1 class="h3 mb-0 text-gray-800">No campaigns found {% if search_query %}for "{{ search_query }}"{% endif %} </h1>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='influencer/scripts/influencer_campaigns.js')}}"></script>
+{% endblock %}

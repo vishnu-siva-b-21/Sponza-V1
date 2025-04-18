@@ -1,0 +1,96 @@
+{% extends "influencer/base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='influencer/styles/influencer_profile.css')}}">
+{% endblock %}
+
+{% block main %}
+<div class="container profile-container">
+    <div class="profile-header">
+        <div class="profile-img">
+            <img src="{{image}}">
+        </div>
+        <div class="profile-info">
+            <h2 id="display-username">{{influencer_name}}</h2>
+            <p id="display-email">{{influencer.email}}</p>
+        </div>
+        <div class="earnings-box">
+            <h3>Your Earnings</h3>
+            <p>₹{{influencer.influencer_income}}</p>
+        </div>
+    </div>
+    <form class="profile-form"
+        action="{{url_for('influencer.update_profile', file=influencer.influencer_profile_image)}}" method="POST"
+        enctype="multipart/form-data" id="profile-form">
+        <h3>Account Info
+            <hr>
+        </h3>
+        <label for="username">{{influencer_name}}</label>
+        <input type="text" name='username' id="username" value="{{influencer_name}}">
+        <div id="username-error" class="error-message"></div>
+
+        <label for="email">Email</label>
+        <input type="email" name='email' id="email" value="{{influencer.email}}">
+        <div id="email-error" class="error-message"></div>
+
+        <label for="profile-pic">Update Profile Picture</label>
+        <input type="file" name="profile_pic" id="profile-pic">
+        <div id="profile-pic-error" class="error-message"></div>
+
+        {% if influencer.influencer_social_media_platform %}
+        <h3 style="font-weight: bold; display: inline;">Platform Presence</h3>
+        <div class="form-row">
+            <div class="platform-icons" id="platform-icons">
+               
+                <div class="platform-row">
+                    <input type="radio" class="checkbox" id="youtube-checkbox" name="platform" data-platform="youtube"
+                        value="youtube" {% if influencer.influencer_social_media_platform=="youtube" %} checked{% endif
+                        %}>
+                    <i class="fab fa-youtube"></i>
+                    <input type="text" placeholder="Enter your URL"
+                        class="url-input {% if influencer.influencer_social_media_platform == 'youtube' %}show{% endif %}"
+                        id="youtube-checkbox-url" name="influencer_social_media_link" {% if
+                        influencer.influencer_social_media_platform=="youtube" %}
+                        value="{{ influencer.influencer_social_media_link }}" {% endif %}>
+                </div>
+
+                <div class="platform-row">
+                    <input type="radio" class="checkbox" id="twitter-checkbox" name="platform" data-platform="twitter"
+                        value="twitter" {% if influencer.influencer_social_media_platform=="twitter" %} checked{% endif
+                        %}>
+                    <i class="fa-brands fa-x-twitter"></i>
+                    <input type="text" placeholder="Enter your URL"
+                        class="url-input {% if influencer.influencer_social_media_platform == 'twitter' %}show{% endif %}"
+                        id="twitter-checkbox-url" name="influencer_social_media_link" {% if
+                        influencer.influencer_social_media_platform=="twitter" %}
+                        value="{{ influencer.influencer_social_media_link }}" {% endif %}>
+                </div>
+
+                <div class="platform-row">
+                    <input type="radio" class="checkbox" id="instagram-checkbox" name="platform"
+                        data-platform="instagram" value="instagram" {% if
+                        influencer.influencer_social_media_platform=="instagram" %} checked{% endif %}>
+                    <i class="fab fa-instagram"></i>
+                    <input type="text" placeholder="Enter your URL"
+                        class="url-input {% if influencer.influencer_social_media_platform == 'instagram' %}show{% endif %}"
+                        id="instagram-checkbox-url" name="influencer_social_media_link" {% if
+                        influencer.influencer_social_media_platform=="instagram" %}
+                        value="{{ influencer.influencer_social_media_link }}" {% endif %}>
+                </div>
+            </div>
+            <span id="influencer-platform-error" class="error-message"></span>
+        </div>
+        {% endif %}
+
+
+        <div id="platform-error" class="error-message"></div>
+
+        <button type="submit">Update</button>
+        <button type="button" class="delete" data-influencer-id="{{influencer.influencer_id}}">Delete</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='influencer/scripts/influencer_profile.js')}}"></script>
+{% endblock %}

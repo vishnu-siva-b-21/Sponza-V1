@@ -1,0 +1,152 @@
+.profile-container {
+  background-color: #fff;
+  max-width: 800px;
+  padding: 2em;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2em;
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 1em;
+  border: 2px solid #4e73df;
+}
+
+.profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-info h2 {
+  margin: 0;
+  color: #4e73df;
+  font-size: 1.5em;
+}
+
+.profile-info p {
+  margin: 0;
+  color: #666;
+}
+
+.profile-form h3 {
+  margin-bottom: 1em;
+  color: #4e73df;
+  font-size: 1.2em;
+}
+
+.profile-form label {
+  display: block;
+  margin: 0.5em 0 0.2em;
+  color: #4e73df;
+  font-weight: bold;
+}
+
+.profile-form input[type="text"],
+.profile-form input[type="email"],
+.profile-form input[type="file"] {
+  width: 100%;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.profile-form button {
+  padding: 0.5em 1em;
+  margin-top: 1rem;
+  background-color: #d1d1d1;
+  color: #4e73df;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.profile-form button:hover {
+  background-color: #4e73df;
+  transition-duration: 0.3s;
+  color: #d1d1d1;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9em;
+  margin-top: -1em;
+  margin-bottom: 1em;
+}
+
+.error-border {
+  border-color: red;
+}
+.earnings-box {
+  background-color: #e6e4e4;
+  color: #4e73df;
+  border-radius: 10px;
+  padding: 1em;
+  text-align: center;
+  width: 150px;
+  margin-left: auto;
+  margin-right: 2em;
+}
+
+.earnings-box h3 {
+  margin: 0;
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+}
+
+.earnings-box p {
+  margin: 0;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+@media (max-width: 700px) {
+  .profile-img {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+  }
+  .earnings-box {
+    margin-left: 2vh;
+  }
+
+  .earnings-box h3,
+  p {
+    font-size: 15px;
+  }
+
+  .profile-form label {
+    font-size: 12px;
+  }
+  .profile-form input[type="text"],
+  .profile-form input[type="email"],
+  .profile-form input[type="file"] {
+    font-size: 12px;
+  }
+}

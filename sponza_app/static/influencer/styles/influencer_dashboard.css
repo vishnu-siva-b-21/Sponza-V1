@@ -1,0 +1,159 @@
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.top-details{
+    margin-top: 3vh;
+}
+.detail-box{
+    padding: 3vh;
+}
+.campaigns-details-1 {
+    display: flex;
+    flex-direction: row;
+}
+
+.item {
+    padding: 2vh;
+}
+
+.pg-1 {
+    width: 1000%;
+}
+
+
+.views {
+    width: auto;
+    padding: 0.5em 1em;
+    height: auto;
+    border-radius: 10px;
+    margin: 1vh;
+    border-style: none;
+    background-color: goldenrod;
+    color: white;
+}
+.leave{
+    width: auto;
+    height: auto;
+    padding: 0.5em 1em;
+    margin: 1vh;
+    border-radius: 10px;
+    border-style: none;
+    background-color: rgb(232, 137, 35);
+    color: white;
+}
+
+.item-2 {
+    width: 15vw;
+}
+
+.progress{
+    width: 50vw;
+}
+
+
+.chart-pie {
+    height: 40vh;
+    width: 150%;
+    margin-left: -12vh;
+  }
+  
+  .pie {
+    min-height: 410px !important;
+    height: auto !important;
+  }
+
+
+
+#myPieChart{
+    margin-top: -2vh;
+}
+
+
+.ongoing-campaign-profile{
+    margin-left: 2vh;
+}
+
+.progress{
+    width: 45vw;
+}
+
+.campaigns-details-1{
+    margin-top: 3vh;
+}
+
+.details{
+    margin-left: 3vh;
+}
+
+@media (max-width:1200px){
+    .navbar-nav h3{
+        font-size: 15px !important;
+    }
+    .progress{
+        width: 40vw;
+    }
+}
+
+@media (max-width:900px){
+    
+    .campaigns-details-1{
+        display: flex;
+        flex-direction: column;
+        
+    }
+    .campaigns-details-1 .item-2{
+        width: 100%;
+    }
+
+    .pie{
+        min-height: 150px;
+    }
+    .chart-pie{
+        margin-left: -15vh;
+    }
+
+    .pie {
+        min-height: 150px;
+      }
+    .chart-pie {
+      height: 40vh;
+      width: 70vh; 
+      margin-left: -15vh;
+    }
+    
+  
+}
+
+@media (max-width: 768px) {
+
+    
+    .profile-img {
+        width: 50px;
+        height: 50px;
+    }
+
+}
+
+@media (max-width: 680px) {
+
+
+    .profile-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .heading, h1{
+        font-size: 20px !important;
+    }
+}
+
+.ongoing-cp{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+

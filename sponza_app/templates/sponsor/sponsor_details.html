@@ -1,0 +1,314 @@
+{% extends "common/base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='sponsor/styles/sponsor_details.css')}}">
+{% endblock %}
+
+{% block content %}
+<div id="wrapper">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Sponsors</div>
+        </a>
+
+        <hr class="sidebar-divider my-0">
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{url_for('sponsor.sponsor_dashboard')}}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></a>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{url_for('sponsor.sponsor_campaigns')}}">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Campaigns</span>
+            </a>
+        </li>
+
+
+        <hr class="sidebar-divider">
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+    </ul>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                {% if camp.admin_flag == "True" %}
+                <h5 style='color:red' class="h5 total-expenses">
+                    This Campaign has been flagged by admin this will be deleted in 24 hrs contact admin for appeal
+                </h5>
+                {% endif %}
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group" style="display: none;">
+                        <input type="text" class="form-control bg-light border-0 small" id="searchInput"
+                            placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="searchButton">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown no-arrow d-sm-none">
+                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                            aria-labelledby="searchDropdown">
+                            <form class="form-inline mr-auto w-100 navbar-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control bg-light border-0 small"
+                                        placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Profile Name</span>
+                            <img class="img-profile rounded-circle" src="{{image}}">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="{{url_for('sponsor.sponsor_profile')}}">
+                                <i class="fa-solid fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                <span>Profile</span>
+                            </a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <h1 class="h3 mb-4 text-gray-800 total-expenses">Campaign Total Expenses: {{camp.campaign_expenses}}</h1>
+            <div class="top-content">
+                <div class="left-content">
+                    <div class="top">
+                        <h1 class="h3 mb-4 text-gray-800" style="margin-left: 6vh; width: auto;">Campaign Details :</h1>
+                        <form action="{{url_for('sponsor.delete_camp', id=camp.campaign_id)}}" method="post"
+                            id="delete-campaign-form"> <button id="delete-campaign"
+                                class="delete-button">Delete</button></form>
+                    </div>
+
+
+
+                    <div class="details-top">
+                        <div id="product-name-container" data-camp-id="{{camp.campaign_id}}">
+                            <h4><b>Name:</b> <span id="product-name">{{camp.campaign_title}}</span>
+                                <i id="edit-name" class="edit-icon fa-regular fa-pen-to-square" data-target="name"></i>
+                                <form id="change-name" method="POST"
+                                    action="{{url_for('sponsor.sponsor_change_details', id=camp.campaign_id)}}"
+                                    class="hidden">
+                                    <input type="text" name="name" id="product-name-input"
+                                        value="{{camp.campaign_title}}" required>
+                                    <i id="save-name" class="save-icon fa-solid fa-check hidden"></i>
+                                    <i id="cancel-name" class="cancel-icon fa-solid fa-xmark hidden"></i>
+                                    <div class="error-message hidden"></div>
+                                </form>
+                            </h4>
+                        </div>
+                        <div id="description-container">
+                            <h4><b>Description:</b> <span id="description">{{camp.campaign_desc}}</span>
+                                <i id="edit-description" class="edit-icon fa-regular fa-pen-to-square"
+                                    data-target="description"></i>
+                                <form id="change-description" method="POST"
+                                    action="{{url_for('sponsor.sponsor_change_details', id=camp.campaign_id)}}"
+                                    class="hidden">
+                                    <textarea name="description" id="description-input"
+                                        required>{{camp.campaign_desc}}</textarea>
+                                    <i id="save-description" class="save-icon fa-solid fa-check hidden"></i>
+                                    <i id="cancel-description" class="cancel-icon fa-solid fa-xmark hidden"></i>
+                                    <div class="error-message hidden"></div>
+                                </form>
+                            </h4>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="right-content">
+                    <img class="campaigns-image" src="{{camp.campaign_profile_image}}" alt="campaigns-image"
+                        style="width: 200px; height: 200px; border-radius: 100%;">
+                    <button
+                        data-upload-url="{{ url_for('sponsor.update_camp_image', id=camp.campaign_id, file=camp.campaign_profile_image) }}"
+                        class="btn btn-primary ml-4 update" id="updateButton">Update</button>
+                </div>
+            </div>
+        </div>
+
+        {% if accpted_inf %}
+        <div class="details">
+            <div class="top-details">
+                <h1 class="h3 mb-4 text-gray-800" style="margin-bottom: -3vh !important; margin-top: 3vh;">Accepted
+                    Influencers</h1>
+                <form id="accepted-search-form" class="search-form">
+                    <input type="search" id="accepted-search-input" name="q" class="search-text"
+                        placeholder="Search the Influencer" autocomplete="off">
+                    <input type="submit" id="accepted-search-button" value="" class="search-submit">
+                </form>
+            </div>
+            <div id="accepted-no-matches" class="no-matches" style="display: none;">No matched data</div>
+            {% for inf in accpted_inf %}
+            <div class="influencer-box">
+                <img class="profile-img" src="{{inf.image}}" alt="Profile Image">
+                <h5>{{inf.username}}</h5>
+                <span class="salary">₹{{inf.camp_pay}}</span>
+                <button class="reject" type="button" data-inf-id="{{inf.id}}"
+                    data-camp-id="{{camp.campaign_id}}">Remove</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div>
+            <h1 class="h3 mb-4 text-gray-800"
+                style="margin-bottom: 3vh !important; margin-top: 3vh;padding-left: 3rem;">No Influencers is assigned
+                for this Campaign</h1>
+        </div>
+        {% endif %}
+
+
+
+        <div class="all-details">
+            {% if camp_sent_pending %}
+            <div class="details details1">
+                <div class="top-details">
+                    <h1 class="h3 mb-4 text-gray-800" style="margin-bottom: -3vh !important; margin-top: 3vh;">Request
+                        Sent</h1>
+                    <form id="requested-search-form" class="search-form">
+                        <input type="search" id="requested-search-input" name="q" class="search-text"
+                            placeholder="Search the Influencer" autocomplete="off">
+                        <input type="submit" id="requested-search-button" value="" class="search-submit">
+                    </form>
+                </div>
+                <div id="requested-no-matches" class="no-matches" style="display: none;">No matched data</div>
+                {% for inf in camp_sent_pending %}
+
+
+                <div class="influencer-box flex-box">
+                    <img class="profile-img" src="{{ inf.image }}" alt="Profile Image">
+                    <h5>{{ inf.username }}</h5>
+                    <div>
+                        <span class="salary" id="salary">₹{{ inf.camp_pay }}</span>
+                        <i id="edit-salary" class="edit-icon fa-regular fa-pen-to-square" data-target="salary"></i>
+                        <form id="change-salary" method="POST"
+                            action="{{url_for('sponsor.change_salary', id=inf.main_id, camp_id=camp.campaign_id)}}"
+                            class="hidden">
+                            <input type="text" name="salary" id="product-salary-input" value="{{inf.camp_pay}}"
+                                required>
+                            <i id="save-salary" class="save-icon fa-solid fa-check hidden"></i>
+                            <i id="cancel-salary" class="cancel-icon fa-solid fa-xmark hidden"></i>
+                            <div class="error-message hidden"></div>
+                        </form>
+                    </div>
+                    <button class="reject" type="button" data-inf-id="{{inf.id}}"
+                        data-camp-id="{{camp.campaign_id}}">Remove</button>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div>
+                <h1 class="h3 mb-4 text-gray-800"
+                    style="margin-bottom: -3vh !important; margin-top: 3vh;padding-left: 3rem;">No Request Sent</h1>
+            </div>
+            {% endif %}
+
+
+            {% if inf_sent_pending %}
+            <div class="details details1">
+                <div class="detail-box">
+                    <div class="top-details">
+                        <h1 class="h3 mb-4 text-gray-800" style="margin-bottom: -3vh !important; margin-top: 3vh;">
+                            Request Recieved</h1>
+                        <form id="accept-search-form" class="search-form">
+                            <input type="search" id="accept-search-input" name="q" class="search-text"
+                                placeholder="Search the Influencer" autocomplete="off">
+                            <input type="submit" id="accept-search-button" value="" class="search-submit">
+                        </form>
+                    </div>
+                    <div id="accept-no-matches" class="no-matches" style="display: none;">No matched data</div>
+                    {% for inf in inf_sent_pending %}
+                    <div class="influencer-box flex-box">
+                        <img class="profile-img" src="{{ inf.image }}" alt="Profile Image">
+                        <h5>{{inf.username}}</h5>
+                        <button class="views" type="button" data-inf-id="{{inf.id}}" data-camp-id="{{camp.campaign_id}}"
+                            data-user-name="{{inf.username}}" data-inf-niche="{{inf.niche}}"
+                            data-inf-email="{{inf.email}}" data-inf-amt="{{inf.inf_pay}}"
+                            data-inf-platform="{{inf.platform}}" data-inf-link="{{inf.link}}">View</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+            <div>
+                <h1 class="h3 mb-0 text-gray-800 no-request-recieved"
+                    style="margin-bottom: -3vh !important; margin-top: 3vh;padding-left: 20rem;">No Request Recieved
+                </h1>
+            </div>
+            {% endif %}
+
+        </div>
+
+
+
+        <div class="create-detail">
+            <h1 class="h3 mb-4 text-gray-800">Create New ad Request</h1>
+            <img src="{{url_for('static', filename='common/images/add.png')}}"
+                style="width: 120px; height: 120px; border-radius: 100%;" class="add-ad_request-image">
+        </div>
+
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.
+                    </div>
+                    <div class="modal-footer">
+                        <form action="#" method="post">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-primary" href="{{url_for('main.user_logout')}}">Logout</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='sponsor/scripts/sponsor_details.js')}}"></script>
+{% endblock %}

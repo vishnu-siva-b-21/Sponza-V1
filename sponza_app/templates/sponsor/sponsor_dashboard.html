@@ -1,0 +1,189 @@
+{% extends "sponsor/base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='sponsor/styles/sponsor_dashboard.css')}}">
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 heading">Dashboard</h1>
+
+    </div>
+
+
+    <div class="row">
+
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Campaigns</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{num_camp}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Ad
+                                Spend
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{total_expenses}}</div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-indian-rupee-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                My Campaigns</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{user_num_camp}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Pending Requests</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                {{num_pending_requests}}
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+
+            <div class="col-xl-8 col-lg-7">
+                <div class="card shadow mb-4 card-box">
+
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Campaigns Growth</h6>
+
+                    </div>
+
+                    <div class="card-body">
+                        <div class="chart-area">
+                            <canvas id="myAreaChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl-4 col-lg-5">
+                <div class="card shadow mb-4 pie card-box">
+
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">User Type Split</h6>
+                    </div>
+
+                    <div class="card-body pie-body">
+                        <div class="chart-pie pt-4 pb-2" id="chartPie">
+                            <canvas id="myPieChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if campaigns %}
+            <div class="details">
+                <div class="ongoing-cp">
+                    <h1 class="h3 mb-0 text-gray-800 heading" style="width: 47vh;">Ongoing Campaigns :</h1>
+
+                </div>
+                {% for camp in campaigns %}
+                <div class="campaigns-details">
+                    <div class="campaigns-details-1">
+                        <img class="profile-img ongoing-campaign-profile" src="{{camp.campaign_profile_image}}"
+                            alt="Profile Image" style="width: 50px; height: 50px; border-radius:50%">
+                        <a href="{{url_for('sponsor.sponsor_details', id=camp.campaign_id)}}">
+                            <div class="item-2 item">{{camp.campaign_title}} {% if camp.admin_flag=="True"
+                                %} -
+                                <span style="color:red">Flagged</span>
+                                {% endif %}
+                            </div>
+                        </a>
+                        <div class="item-3 item">
+                            <div class="progress pg-1">
+                                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                                    data-progress="{{ camp.progress }}" style="width: 0;">
+                                </div>
+                            </div>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    var progressBars = document.querySelectorAll('.progress-bar');
+                                    progressBars.forEach(function (bar) {
+                                        var progress = bar.getAttribute('data-progress');
+                                        bar.style.width = progress + '%';
+                                    });
+                                });
+                            </script>
+
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+            {% else %}
+            <div>
+                <h1 class="h3 mb-0 text-gray-800" style="width: 47vh; padding-left: 1.5rem;">No Ongoing Campaigns</h1>
+            </div>
+            {% endif %}
+        </div>
+        {% endblock %}
+
+        {% block scripts %}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+        <script src="{{url_for('static', filename='sponsor/scripts/sponsor_dashboard.js')}}"></script>
+        {% endblock %}

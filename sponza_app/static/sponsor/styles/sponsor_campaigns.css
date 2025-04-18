@@ -1,0 +1,53 @@
+.ongoing-cp {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.ongoing-cp-inner {
+    padding: 3vh;
+}
+
+.box {
+    width: 230px;
+    background-color: gainsboro;
+    height: auto;
+    padding: 3vh;
+    cursor: pointer;
+}
+
+.box img {
+    margin-left: 5.5vh;
+    margin-bottom: 3vh;
+}
+
+.add-campaigns {
+    text-align: center;
+    cursor: pointer;
+    margin-top: 5vh;
+}
+
+@media (max-width:1000px){
+    .box{
+        width: 150px;
+    }
+    .box img{
+        width: 50px !important;
+        height: 50px !important;
+        margin-left: 4vh;
+    }
+    .box h4{
+        font-size: 15px !important;
+    }
+    .box p{
+        font-size: 10px !important;
+    }
+    .box .h3{
+        font-size: 15px !important;
+    }
+    .add-campaigns-image{
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+}

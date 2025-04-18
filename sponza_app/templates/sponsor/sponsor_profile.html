@@ -1,0 +1,43 @@
+{% extends "sponsor/base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='sponsor/styles/sponsor_profile.css')}}">
+{% endblock %}
+
+{% block main %}
+<div class="container profile-container">
+    <div class="profile-header">
+        <div class="profile-img">
+            <img src="{{image}}">
+        </div>
+        <div class="profile-info">
+            <h2 id="display-username">{{sponsor_name}}</h2>
+            <p id="display-email">{{sponsor.email}}</p>
+        </div>
+    </div>
+    <form class="profile-form" action="{{url_for('sponsor.update_profile', file=sponsor.sponsor_profile_image)}}"
+        method="POST" enctype="multipart/form-data" id="profile-form">
+        <h3>Account Info
+            <hr>
+        </h3>
+        <label for="username">Company Name</label>
+        <input type="text" name='company_name' id="username" value="{{sponsor_name}}">
+        <div id="username-error" class="error-message"></div>
+
+        <label for="email">Email</label>
+        <input type="email" name='email' id="email" value="{{sponsor.email}}">
+        <div id="email-error" class="error-message"></div>
+
+        <label for="profile-pic">Update Profile Picture</label>
+        <input type="file" name="profile_pic" id="profile-pic">
+        <div id="profile-pic-error" class="error-message"></div>
+
+        <button type="submit">Update</button>
+        <button type="button" class="delete" data-sponsor-id="{{sponsor.sponsor_id}}">Delete</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='sponsor/scripts/sponsor_profile.js')}}"></script>
+{% endblock %}

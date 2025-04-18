@@ -1,0 +1,51 @@
+{% extends "sponsor/base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='sponsor/styles/sponsor_campaigns.css')}}">
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    {% if campaigns.items %}
+    <h1 class="h3 mb-4 text-gray-800">Ongoing Campaigns</h1>
+    <div class="ongoing-cp">
+        {% for camp in campaigns.items %}
+        <a href="{{url_for('sponsor.sponsor_details', id=camp.campaign_id)}}"
+            style="text-decoration: none; color: grey;">
+            <div class="ongoing-cp-inner">
+                <div class="box" data-link="dairy_milk.html">
+                    <img src="{{camp.campaign_profile_image}}"
+                        style="width: 100px; height: 100px; border-radius: 100%;">
+                    <h4><b>{{camp.campaign_title}}</b></h4>
+                    <p>{{camp.campaign_desc}}</p>
+                    <p class="date-range-paragraph">Start Date: {{camp.campaign_start_date}}</p>
+                    <p class="date-range-paragraph">End Date: {{camp.campaign_end_date}}</p>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        {% if campaigns.has_prev %}
+        <a href="{{ url_for('sponsor.sponsor_campaigns', page=campaigns.prev_num) }}"
+            class="btn btn-primary">Previous</a>
+        {% endif %}
+
+        {% if campaigns.has_next %}
+        <a href="{{ url_for('sponsor.sponsor_campaigns', page=campaigns.next_num) }}" class="btn btn-primary">Next</a>
+        {% endif %}
+    </div>
+    {% else %}
+    <h1 class="h3 mb-4 text-gray-800">No campaigns Created</h1>
+    {% endif %}
+    <div class="add-campaigns">
+        <h1 class="h3 mb-4 text-gray-800">Add Campaigns</h1>
+        <img src="{{url_for('static', filename='common/images/add.png')}}"
+            style="width: 120px; height: 120px; border-radius: 100%;" class="add-campaigns-image">
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='sponsor/scripts/sponsor_campaigns.js')}}"></script>
+{% endblock %}

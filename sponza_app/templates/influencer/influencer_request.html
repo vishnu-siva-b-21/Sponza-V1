@@ -1,0 +1,86 @@
+{% extends "influencer/base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='influencer/styles/influencer_request.css')}}">
+{% endblock %}
+
+{% block main %}
+<div class="all-details">
+    {% if inf_sent_pending %}
+    <div class="details details1">
+        <div class="top-details">
+            <h1 class="h3 mb-4 text-gray-800" style="margin-bottom: -3vh !important; margin-top: 3vh;">Request Sent</h1>
+            <form id="requested-search-form" class="search-form">
+                <input type="search" id="requested-search-input" name="q" class="search-text"
+                    placeholder="Search the Influencer" autocomplete="off">
+                <input type="submit" id="requested-search-button" value="" class="search-submit">
+            </form>
+        </div>
+        <div id="requested-no-matches" class="no-matches" style="display: none;">No matched data</div>
+        {% for camp in inf_sent_pending %}
+        <div class="influencer-box flex-box">
+            <img class="profile-img" src="{{ camp.image }}" alt="Profile Image">
+            <h5>{{ camp.title }}</h5>
+            <h5>{{ camp.sponsor }}</h5>
+            <div>
+                <span class="salary" id="salary">₹{{ camp.camp_pay }}</span>
+                <i id="edit-salary" class="edit-icon fa-regular fa-pen-to-square" data-target="salary"></i>
+                <form id="change-salary" method="POST" action="{{url_for('influencer.change_salary', id=camp.main_id)}}"
+                    class="hidden">
+                    <input type="text" name="salary" id="product-salary-input" value="{{camp.camp_pay}}" required>
+                    <i id="save-salary" class="save-icon fa-solid fa-check hidden"></i>
+                    <i id="cancel-salary" class="cancel-icon fa-solid fa-xmark hidden"></i>
+                    <div class="error-message hidden"></div>
+                </form>
+            </div>
+            <button class="reject" type="button" data-inf-id="{{influencer.influencer_id}}"
+                data-camp-id="{{camp.id}}">Remove</button>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div>
+            <h1 class="h3 mb-4 text-gray-800" style="margin-bottom: -3vh !important; margin-top: 3vh;">No Request Sent</h1>
+        </div>
+        {% endif %}
+    
+    </div>
+   
+
+    {% if camp_sent_pending %}
+    <div class="details details1">
+        <div class="detail-box">
+            <div class="top-details">
+                <h1 class="h3 mb-4 text-gray-800" style="margin-bottom: -3vh !important; margin-top: 3vh;">Request
+                    Recieved</h1>
+                <form id="accept-search-form" class="search-form">
+                    <input type="search" id="accept-search-input" name="q" class="search-text"
+                        placeholder="Search the Influencer" autocomplete="off">
+                    <input type="submit" id="accept-search-button" value="" class="search-submit">
+                </form>
+            </div>
+            <div id="accept-no-matches" class="no-matches" style="display: none;">No matched data</div>
+            {% for camp in camp_sent_pending %}
+            <div class="influencer-box flex-box">
+                <img class="profile-img" src="{{camp.image}}" alt="Profile Image">
+                <h5>{{camp.title}}</h5>
+                <button class="views" type="button" data-sponsor-name="{{camp.sponsor_company_name}}"
+                    data-camp-desc="{{camp.desc}}" data-camp-end-date="{{camp.end_date}}"
+                    data-camp-amt="{{camp.camp_amt}}" data-inf-id="{{influencer.influencer_id}}"
+                    data-camp-id="{{camp.id}}">View</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+    <div>
+        <h1 class="h3 mb-0 text-gray-800" style=" margin-top: 3vh;">No Request Recieved</h1>
+    </div>
+    {% endif %}
+    </div>
+    
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='influencer/scripts/influencer_request.js')}}"></script>
+{% endblock %}

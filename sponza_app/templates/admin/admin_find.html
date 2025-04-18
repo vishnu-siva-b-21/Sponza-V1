@@ -1,0 +1,154 @@
+{% extends "admin/base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{url_for('static', filename='admin/styles/admin_find.css')}}">
+<style>
+    .loading-screen {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(#3E64D3, #4505e7);
+        color: white;
+        font-size: 24px;
+        text-align: center;
+        z-index: 9999;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+{% endblock %}
+
+
+{% block main %}
+<div class="loading-screen" id="loadingScreen">
+    Sending the Mail...
+</div>
+<div class="details">
+    {% if campaigns %}
+    <div class="campaigns">
+        <div class="top-details campaigns-search">
+            <h1 class="h3 mb-4 text-gray-800 head-camp heading">Unflagged Campaigns:</h1>
+            <form id="find-campaigns-search-form" class="search-form">
+                <input type="search" id="find-campaigns-search-input" name="q" class="search-text"
+                    placeholder="Search the Campaign" autocomplete="off">
+                <input type="submit" id="find-campaigns-search-button" value="" class="search-submit">
+            </form>
+        </div>
+        <div id="find-campaigns-no-matches" class="no-matches" style="display: none;">No matched data</div>
+        <div class="detail-box" id="campaigns-detail-box">
+            {% for camp in campaigns %}
+            <div class="campaigns-box">
+                <img class="profile-img" src="{{ camp.campaign_profile_image }}" alt="Profile Image">
+                <h5>{{ camp.campaign_title }}</h5>
+                <button class="view view-campaign" type="button" data-title="Campaign Details" data-content="
+            <p><strong>Sponsor Name:</strong> {{ camp.sponsor_name }}</p>
+            <p><strong>Duration:</strong> {{ camp.total_camp_days }} days</p>
+            <p><strong>Completed Days:</strong> {{ camp.completed_camp_days }} days</p>
+            <p><strong>Completed Progress:</strong> {{ camp.progress }}%</p>
+            <p><strong>Influencers:</strong> 
+                {% if camp.all_influencers %}
+                    {{ camp.all_influencers | join(', ') }}
+                {% else %}
+                    No Influencers
+                {% endif %}
+            </p>
+        " onclick="showDetails(this)">
+                    View
+                </button>
+                <button class="flag" type="button" data-id="{{camp.campaign_id}}" data-role="camp">Flag</button>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    {% else %}
+    <div>
+        <h1 class="h3 mb-4 text-gray-800 head-camp heading">No Unflagged Campaigns</h1>
+    </div>
+    {% endif %}
+
+    {% if sponsors %}
+    <div class="sponsors">
+        <div class="top-details sponsors-search">
+            <h1 class="h3 mb-4 text-gray-800 heading">Unflagged Sponsors:</h1>
+            <form id="find-sponsors-search-form" class="search-form">
+                <input type="search" id="find-sponsors-search-input" name="q" class="search-text"
+                    placeholder="Search the Sponsor" autocomplete="off">
+                <input type="submit" id="find-sponsors-search-button" value="" class="search-submit">
+            </form>
+        </div>
+        <div id="find-sponsors-no-matches" class="no-matches" style="display: none;">No matched data</div>
+        <div class="detail-box" id="sponsors-detail-box">
+            {% for spn in sponsors %}
+            <div class="sponsors-box">
+                <img class="profile-img" src="{{ spn.sponsor_profile_image }}" alt="Profile Image">
+                <h5>{{ spn.sponsor_company_name }}</h5>
+                <button class="view view-sponsor" type="button" data-title="Sponsor Details" data-content="
+                <p><strong>Sponsor Name:</strong> {{ spn.sponsor_company_name }}</p>
+                <p><strong>Ongoing Campaigns:</strong> 
+                    {% if spn.campaign_titles %}
+                        {{ spn.campaign_titles | join(', ') }}
+                    {% else %}
+                        No ongoing campaigns
+                    {% endif %}
+                </p>" onclick="showDetails(this)">View</button>
+                <button class="flag" type="button" data-id="{{spn.sponsor_id}}" data-role="spn">Flag</button>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    {% else %}
+    <div>
+        <h1 class="h3 mb-4 text-gray-800 heading">No Unflagged sponsors</h1>
+    </div>
+    {% endif %}
+
+    {% if influencers %}
+    <div class="influencers">
+        <div class="top-details influencers-search">
+            <h1 class="h3 mb-4 text-gray-800 heading">Unflagged Influencers:</h1>
+            <form id="find-influencers-search-form" class="search-form">
+                <input type="search" id="find-influencers-search-input" name="q" class="search-text"
+                    placeholder="Search the Influencer" autocomplete="off">
+                <input type="submit" id="find-influencers-search-button" value="" class="search-submit">
+            </form>
+        </div>
+        <div id="find-influencers-no-matches" class="no-matches" style="display: none;">No matched data</div>
+        <div class="detail-box" id="influencers-detail-box">
+            {% for inf in influencers %}
+            <div class="influencer-box">
+                <img class="profile-img" src="{{ inf.influencer_profile_image }}" alt="Profile Image">
+                <h5>{{ inf.influencer_user_name }}</h5>
+                <button class="view view-influencer" type="button" data-title="Influencer Details" data-content="<p><strong>Influencer Name:</strong> {{ inf.influencer_user_name }}</p>
+                              <p><strong>Niche:</strong> {{ inf.influencer_niche }}</p>
+                              <p><strong>Social Media Platform:</strong> {{ inf.influencer_social_media_platform }}</p>
+                              <p><strong>Ongoing Campaigns:</strong> 
+                                  {% if inf.campaign_titles %}
+                                      {{ inf.campaign_titles | join(', ') }}
+                                  {% else %}
+                                      No ongoing campaigns
+                                  {% endif %}
+                              </p>" onclick="showDetails(this)">View</button>
+                <button class="flag" type="button" data-id="{{inf.influencer_id}}" data-role="inf">Flag</button>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    {% else %}
+    <div>
+        <h1 class="h3 mb-4 text-gray-800">No Unflagged Influencers</h1>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='admin/scripts/admin_find.js')}}"></script>
+{% endblock %}

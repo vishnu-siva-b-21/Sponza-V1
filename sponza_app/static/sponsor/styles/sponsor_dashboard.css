@@ -1,0 +1,202 @@
+.campaigns-details-1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-left: 10vh;
+}
+
+.item {
+  padding: 3vh;
+}
+
+.pg-1 {
+  width: 1000%;
+}
+
+.request-details {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.request-details-1 {
+  padding: 3vh;
+}
+
+.request-box {
+  width: 150px;
+  height: 30vh;
+  background-color: gainsboro;
+  padding: 3.5vh;
+}
+
+.accept-button {
+  background-color: darkcyan;
+  color: white;
+  border-radius: 10px;
+  border-style: none;
+  margin-left: 2vh;
+}
+
+.influencer-details {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.influencer-detail-1 {
+  padding: 3vh;
+}
+
+.influencer-box {
+  width: 150px;
+  height: 30vh;
+  background-color: gainsboro;
+  padding: 3.5vh;
+}
+
+.request-button {
+  background-color: darkcyan;
+  color: white;
+  border-radius: 10px;
+  border-style: none;
+  margin-left: 1vh;
+}
+
+.navbar-nav h3 {
+  padding: 3vh;
+}
+
+.progress {
+  width: 45vw;
+}
+.img-profile {
+  margin-top: 2vh;
+}
+
+.chart-pie {
+  height: 40vh;
+  width: 150%; 
+  margin-left: -12vh;
+}
+
+.pie {
+  min-height: 410px !important;
+  height: auto !important;
+}
+
+#myPieChart {
+  margin-top: -2vh;
+}
+
+.details {
+  margin-left: 3vh;
+}
+
+.view {
+  width: auto;
+  padding: 0.5em 1em;
+  height: auto;
+  border-radius: 10px;
+  border-style: none;
+  background-color: goldenrod;
+  color: white;
+}
+.details {
+  margin-top: 5vh;
+}
+.campaigns-details {
+  margin-top: 4vh;
+  margin-bottom: 5vh;
+}
+
+a ,.item{
+  text-decoration: none !important;
+}
+
+.card{
+  width: 97%;
+
+}
+
+@media (max-width: 1000px) {
+  .campaigns-details-1 {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+  }
+  .hide-item {
+    display: none;
+  }
+  ul h3 {
+    font-size: 20px;
+  }
+  .img-profile {
+    margin-top: 1vh;
+  }
+  .pie {
+    min-height: 150px;
+  }
+.chart-pie {
+  height: 40vh;
+  width: 70vh; 
+  margin-left: -10vh;
+}
+
+.pie-body{
+  min-height: 40vh;
+  height: auto;
+}
+
+}
+
+@media (max-width:750px){
+  
+  .chart-pie{
+    position: relative;
+    left: -3vh;
+  }  
+}
+
+
+@media (max-width:500px){
+  
+.card-box{
+  width: 65% !important;
+}
+.heading{
+  font-size: 20px;
+}
+.col-xl-4, .col-lg-5 {
+  width: 100%;
+ 
+  flex-direction: column;
+}
+ 
+.chart-pie{
+  position: relative;
+  left: -5vh;
+}  
+
+}
+
+@media (max-width:390px){
+  .card-box{
+    width: 70% !important;
+    margin-left: 2vh;
+  }
+}
+
+
+@media (max-width:350px){
+  .card-box{
+    width: 70% !important;
+    margin-left: 2vh;
+  }
+  .chart-pie{
+    width: 150%;
+    margin-left: -2vh;
+  }
+}
+
+
