@@ -146,10 +146,24 @@ def create_app():
         )
         scheduler.start()
 
+    def add_admin():
+        from sponza_app.models import Admin
+
+        existing_user = Admin.query.filter_by(email="admin@gmail.com").first()
+        if existing_user is None:
+            hashed_password = bcrypt.generate_password_hash("admin").decode("utf-8")
+            admin = Admin(
+                email="admin@gmail.com",
+                password=hashed_password,
+            )
+            db.session.add(admin)
+            db.session.commit()
+
     def run_on_startup():
         delete_ended_campaigns()
         delete_flagged_campaigns()
         delete_flagged_users()
+        add_admin()
 
     # Initialize the application
     with app.app_context():
